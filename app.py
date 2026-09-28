@@ -1,8 +1,8 @@
 """
 Actividad: Ajuste de Recta y Predicción Interactiva con Streamlit
 
-Alumno: TU NOMBRE COMPLETO
-Matrícula: TU MATRÍCULA
+Alumno: Esteban Gomez Estrada
+Matrícula: 2403032186
 Asignatura: Ciencia de Datos
 Fecha: 27/09/2026
 """
@@ -11,7 +11,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
+from calculos import calcular_recta
 
 st.set_page_config(
     page_title="Ajuste de Recta",
@@ -48,5 +48,35 @@ if archivo is not None:
     else:
         x = datos["x"].to_numpy(dtype=float)
         y = datos["y"].to_numpy(dtype=float)
+        
+        
 
         st.success("Archivo cargado correctamente.")
+    
+    if x[0] == x[1]:
+        st.error("Los valores de X no pueden ser iguales.")
+
+    else:
+        pendiente, intercepto = calcular_recta(x, y)
+
+        st.subheader("2. Cálculo de la recta")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.metric(
+                "Pendiente (m)",
+                f"{pendiente:.4f}"
+            )
+
+        with col2:
+            st.metric(
+                "Ordenada al origen (b)",
+                f"{intercepto:.4f}"
+            )
+
+        st.write("### Ecuación de la recta")
+
+        st.latex(
+            f"y = {pendiente:.4f}x + {intercepto:.4f}"
+        )
